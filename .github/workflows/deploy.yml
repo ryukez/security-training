@@ -1,0 +1,53 @@
+name: Deploy to S3
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  AWS_REGION: ap-northeast-1
+  S3_BUCKET: ${{ secrets.S3_BUCKET_NAME }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      
+      - name: Sync files to S3
+        working-directory: ./company-website
+        run: |
+          aws s3 sync . "s3://${{ env.S3_BUCKET }}/" \
+            --exclude "*.sh" \
+            --exclude ".git/*" \
+            --exclude ".gitignore" \
+            --exclude "README.md" \
+            --exclude ".env" \
+            --exclude ".DS_Store" \
+            --exclude ".github/*" \
+            --delete
+      
+      - name: Invalidate CloudFront (if configured)
+        if: env.CLOUDFRONT_DISTRIBUTION_ID != ''
+        env:
+          CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "${{ env.CLOUDFRONT_DISTRIBUTION_ID }}" \
+            --paths "/*"
+      
+      - name: Display website URL
+        run: |
+          echo "Deployment completed!"
+          echo "Website URL: http://${{ env.S3_BUCKET }}.s3-website-${{ env.AWS_REGION }}.amazonaws.com"

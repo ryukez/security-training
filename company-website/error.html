@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - ページが見つかりません | 株式会社サンプル</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .error-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        .error-content h1 {
+            font-size: 6rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        .error-content h2 {
+            font-size: 2rem;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+        .error-content p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        .back-home {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .back-home:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-page">
+        <div class="error-content">
+            <h1>404</h1>
+            <h2>ページが見つかりません</h2>
+            <p>お探しのページは移動または削除された可能性があります。</p>
+            <a href="/" class="back-home">ホームページへ戻る</a>
+        </div>
+    </div>
+</body>
+</html>

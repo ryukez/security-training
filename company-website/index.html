@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="私たちの会社は革新的なソリューションを提供します">
+    <title>株式会社サンプル - トップページ</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <h1>株式会社サンプル</h1>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#home">ホーム</a></li>
+                    <li><a href="#about">会社概要</a></li>
+                    <li><a href="#services">サービス</a></li>
+                    <li><a href="#contact">お問い合わせ</a></li>
+                </ul>
+                <button class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h2>革新的なソリューションで<br>ビジネスの未来を創造</h2>
+                    <p>最先端技術とクリエイティブな発想で、お客様の課題を解決します</p>
+                    <a href="#contact" class="cta-button">お問い合わせはこちら</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <div class="container">
+                <h2>会社概要</h2>
+                <div class="about-grid">
+                    <div class="about-text">
+                        <p>株式会社サンプルは、2020年に設立された革新的なテクノロジー企業です。</p>
+                        <p>私たちは、お客様のビジネス課題に対して最適なソリューションを提供し、デジタルトランスフォーメーションを支援しています。</p>
+                    </div>
+                    <div class="company-info">
+                        <h3>会社情報</h3>
+                        <dl>
+                            <dt>会社名</dt>
+                            <dd>株式会社サンプル</dd>
+                            <dt>設立</dt>
+                            <dd>2020年4月1日</dd>
+                            <dt>所在地</dt>
+                            <dd>東京都千代田区1-1-1</dd>
+                            <dt>代表者</dt>
+                            <dd>山田 太郎</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="services">
+            <div class="container">
+                <h2>サービス</h2>
+                <div class="service-cards">
+                    <div class="service-card">
+                        <div class="service-icon">💻</div>
+                        <h3>Webアプリケーション開発</h3>
+                        <p>最新技術を活用した高品質なWebアプリケーションを開発します</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">📱</div>
+                        <h3>モバイルアプリ開発</h3>
+                        <p>iOS・Android対応のネイティブアプリを開発します</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">☁️</div>
+                        <h3>クラウドインフラ構築</h3>
+                        <p>AWS・Azure・GCPを活用した最適なインフラを構築します</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">🤖</div>
+                        <h3>AI・機械学習</h3>
+                        <p>AIを活用した革新的なソリューションを提供します</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2>お問い合わせ</h2>
+                <form id="contact-form" class="contact-form">
+                    <div class="form-group">
+                        <label for="name">お名前</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">メールアドレス</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">メッセージ</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">送信する</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 株式会社サンプル. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
