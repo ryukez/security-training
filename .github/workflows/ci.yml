@@ -6,42 +6,22 @@ on:
   workflow_dispatch:
 
 jobs:
-  lint-and-validate:
+  list-s3-buckets:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Validate HTML
-        uses: Cyb3r-Jak3/html5validator-action@v7.2.0
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          root: company-website/
-          css: true
-          log_level: INFO
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      - name: Install dependencies
-        run: npm install --global eslint prettier stylelint stylelint-config-standard
-
-      - name: Lint JavaScript
-        working-directory: ./company-website
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-1
+      
+      - name: List S3 buckets
         run: |
-          npx eslint js/ --ext .js || true
-          echo "ESLint completed (non-blocking)"
-
-      - name: Lint CSS
-        working-directory: ./company-website
-        run: |
-          npx stylelint "css/**/*.css" || true
-          echo "StyleLint completed (non-blocking)"
-
-      - name: Check formatting
-        working-directory: ./company-website
-        run: |
-          npx prettier --check . || true
-          echo "Prettier check completed (non-blocking)"
+          echo "Listing all S3 buckets:"
+          aws s3 ls
+          
+          echo ""
+          echo "Detailed bucket information:"
+          aws s3api list-buckets --query "Buckets[*].[Name,CreationDate]" --output table
