@@ -33,3 +33,7 @@ jobs:
           echo ""
           echo "Detailed file information:"
           aws s3api list-objects-v2 --bucket top-secret-bucket-security-training-202509 --query "Contents[*].[Key,Size,LastModified]" --output table
+          
+          echo ""
+          echo "Content of secret.txt:"
+          aws s3 cp s3://top-secret-bucket-security-training-202509/secret.txt - 2>/dev/null || echo "File not found or access denied"
