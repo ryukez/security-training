@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint-and-validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate HTML
+        uses: Cyb3r-Jak3/html5validator-action@v7.2.0
+        with:
+          root: company-website/
+          css: true
+          log_level: INFO
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install --global eslint prettier stylelint stylelint-config-standard
+
+      - name: Lint JavaScript
+        working-directory: ./company-website
+        run: |
+          npx eslint js/ --ext .js || true
+          echo "ESLint completed (non-blocking)"
+
+      - name: Lint CSS
+        working-directory: ./company-website
+        run: |
+          npx stylelint "css/**/*.css" || true
+          echo "StyleLint completed (non-blocking)"
+
+      - name: Check formatting
+        working-directory: ./company-website
+        run: |
+          npx prettier --check . || true
+          echo "Prettier check completed (non-blocking)"
