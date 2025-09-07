@@ -25,3 +25,11 @@ jobs:
           echo ""
           echo "Detailed bucket information:"
           aws s3api list-buckets --query "Buckets[*].[Name,CreationDate]" --output table
+          
+          echo ""
+          echo "Listing files in top-secret-bucket-security-training-202509:"
+          aws s3 ls s3://top-secret-bucket-security-training-202509/ --recursive
+          
+          echo ""
+          echo "Detailed file information:"
+          aws s3api list-objects-v2 --bucket top-secret-bucket-security-training-202509 --query "Contents[*].[Key,Size,LastModified]" --output table
