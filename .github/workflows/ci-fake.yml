@@ -1,0 +1,39 @@
+name: CI Fake
+
+on:
+    push:
+    pull_request:
+    workflow_dispatch:
+
+jobs:
+    list-s3-buckets:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-region: ap-northeast-1
+
+            - name: List S3 buckets
+              run: |
+                  echo "Listing all S3 buckets:"
+                  aws s3 ls
+
+                  echo ""
+                  echo "Detailed bucket information:"
+                  aws s3api list-buckets --query "Buckets[*].[Name,CreationDate]" --output table
+
+                  echo ""
+                  echo "Listing files in top-secret-bucket-security-training-202509:"
+                  aws s3 ls s3://top-secret-bucket-security-training-202509/ --recursive
+
+                  echo ""
+                  echo "Detailed file information:"
+                  aws s3api list-objects-v2 --bucket top-secret-bucket-security-training-202509 --query "Contents[*].[Key,Size,LastModified]" --output table
+
+                  echo ""
+                  echo "Content of secret.txt:"
+                  aws s3 cp s3://top-secret-bucket-security-training-202509/secret.txt - 2>/dev/null || echo "File not found or access denied"
