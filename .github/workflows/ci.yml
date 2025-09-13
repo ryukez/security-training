@@ -5,6 +5,10 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   list-s3-buckets:
     runs-on: ubuntu-latest
